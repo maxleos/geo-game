@@ -1,9 +1,5 @@
 let map = L.map('map').setView([-15, -60], 3);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; OpenStreetMap &copy; CartoDB',
-  subdomains: 'abcd',
-  maxZoom: 19
-}).addTo(map);
+
 
 let geojsonLayer;
 let currentCountry = null;
