@@ -64,7 +64,7 @@ function shuffle(array) {
 
 function startGame(selectedContinent) {
   allCountries = geoData.features
-    .filter(f => f.properties.CONTINENT === selectedContinent)
+    .filter(f => f.properties.CONTINENT === selectedContinent && f.properties.ADMIN === f.properties.SOVEREIGNT)
     .map(f => f.properties.ADMIN);
   allCountries = shuffle(allCountries).slice(0, 20);
   countryQueue = shuffle([...allCountries]);
@@ -87,8 +87,9 @@ function loadNext() {
   if (countryQueue.length === 0) {
     const total = correctCount + wrongCount;
     const percentage = total > 0 ? Math.round((correctCount / total) * 100) : 0;
-    document.getElementById("feedback").textContent = `Game finished! You got ${percentage}% correct.`;
-  document.getElementById("choices").innerHTML = `<button onclick=\"backToMenu()\">Back to continent selection</button>`;
+    document.getElementById("game").style.display = "none";
+  document.getElementById("end-screen").style.display = "block";
+  document.getElementById("final-score").textContent = `You got ${percentage}% correct.`;
     return;
   }
 
