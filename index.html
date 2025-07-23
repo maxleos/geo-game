@@ -3,18 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Guess the Country (South America)</title>
+  <title>Guess the Country</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 <body>
   <div class="game-container">
-    <h1>Guess the Country (South America)</h1>
-    <div id="map" style="height: 400px;"></div>
-    <div id="choices"></div>
-    <p id="feedback"></p>
-    <p id="score"></p>
+    <h1>Guess the Country</h1>
+    <div id="menu">
+      <p>Select a continent:</p>
+      <div id="continent-choices"></div>
+    </div>
+    <div id="game" style="display:none;">
+      <div id="map" style="height: 400px;"></div>
+      <div id="choices"></div>
+      <p id="feedback"></p>
+      <p id="score"></p>
+    </div>
   </div>
   <script src="script.js"></script>
 </body>

@@ -1,7 +1,7 @@
 let map = L.map('map', {
   zoomControl: false,
   attributionControl: false
-}).setView([-15, -60], 3);
+}).setView([20, 0], 2);
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap &copy; CartoDB',
@@ -15,12 +15,31 @@ let currentCountry = null;
 let correctCount = 0;
 let wrongCount = 0;
 let countryQueue = [];
+let allCountries = [];
 
-const allCountries = [
-  "Argentina", "Bolivia", "Brazil", "Chile", "Colombia",
-  "Ecuador", "Guyana", "Paraguay", "Peru", "Suriname",
-  "Uruguay", "Venezuela"
-];
+const continents = {
+  "South America": [
+    "Argentina", "Bolivia", "Brazil", "Chile", "Colombia",
+    "Ecuador", "Guyana", "Paraguay", "Peru", "Suriname",
+    "Uruguay", "Venezuela"
+  ],
+  "Europe": [
+    "France", "Germany", "Italy", "Spain", "Portugal", "Norway", "Sweden", "Finland", "Poland", "Greece",
+    "United Kingdom", "Ireland", "Austria", "Hungary", "Romania", "Bulgaria", "Netherlands", "Belgium", "Denmark", "Switzerland"
+  ],
+  "Africa": [
+    "Nigeria", "Egypt", "South Africa", "Morocco", "Kenya", "Ethiopia", "Ghana", "Algeria", "Uganda", "Tanzania"
+  ],
+  "Asia": [
+    "China", "India", "Japan", "South Korea", "Indonesia", "Thailand", "Vietnam", "Malaysia", "Saudi Arabia", "Iran"
+  ],
+  "North America": [
+    "United States", "Canada", "Mexico", "Guatemala", "Cuba", "Panama", "Honduras", "Nicaragua", "Costa Rica", "Haiti"
+  ],
+  "Oceania": [
+    "Australia", "New Zealand", "Papua New Guinea", "Fiji", "Samoa"
+  ]
+};
 
 function updateScore() {
   document.getElementById("score").textContent =
@@ -43,10 +62,13 @@ function shuffle(array) {
   return array;
 }
 
-function startGame() {
+function startGame(selectedContinent) {
+  allCountries = continents[selectedContinent];
   countryQueue = shuffle([...allCountries]);
   correctCount = 0;
   wrongCount = 0;
+  document.getElementById("menu").style.display = "none";
+  document.getElementById("game").style.display = "block";
   updateScore();
   loadNext();
 }
@@ -115,8 +137,15 @@ function checkAnswer(name) {
   }
 }
 
+function showContinentMenu() {
+  const menu = document.getElementById("continent-choices");
+  menu.innerHTML = Object.keys(continents).map(continent =>
+    `<button onclick="startGame('${continent}')">${continent}</button>`
+  ).join("");
+}
+
 window.onload = () => {
   loadGeoData().then(() => {
-    startGame();
+    showContinentMenu();
   });
 };
