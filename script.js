@@ -3,7 +3,14 @@ let map = L.map('map', {
   attributionControl: false
 }).setView([-15, -60], 3);
 
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OpenStreetMap &copy; CartoDB',
+  subdomains: 'abcd',
+  maxZoom: 19
+}).addTo(map);
+
 let geojsonLayer;
+let geoData = null;
 let currentCountry = null;
 let correctCount = 0;
 let wrongCount = 0;
@@ -19,17 +26,12 @@ function updateScore() {
     `Correct: ${correctCount} | Incorrect: ${wrongCount}`;
 }
 
-function getGeoJSONFor(countryName) {
-  const entry = am5geodata_data_countries2;
-  for (let iso in entry) {
-    if (entry[iso].country.toLowerCase() === countryName.toLowerCase()) {
-      const mapList = entry[iso].maps;
-      const mapKey = mapList[0];
-      return fetch(`https://cdn.amcharts.com/lib/5/geodata/json/${mapKey}.json`)
-        .then(res => res.json());
-    }
-  }
-  throw new Error("Map not found for " + countryName);
+function loadGeoData() {
+  return fetch("ne_countries.geojson") // Local Natural Earth GeoJSON
+    .then(res => res.json())
+    .then(data => {
+      geoData = data;
+    });
 }
 
 function loadNext() {
@@ -41,8 +43,12 @@ function loadNext() {
   const correct = countries[Math.floor(Math.random() * countries.length)];
   currentCountry = correct;
 
-  getGeoJSONFor(correct).then(geojson => {
-    geojsonLayer = L.geoJSON(geojson, {
+  const feature = geoData.features.find(f =>
+    f.properties.ADMIN.toLowerCase().includes(correct.toLowerCase())
+  );
+
+  if (feature) {
+    geojsonLayer = L.geoJSON(feature, {
       style: {
         color: "#000",
         fillColor: "#ccc",
@@ -52,10 +58,10 @@ function loadNext() {
     }).addTo(map);
     map.fitBounds(geojsonLayer.getBounds());
     map.invalidateSize();
-  }).catch(err => {
-    console.error(err);
+  } else {
     document.getElementById("feedback").textContent = "Error loading map.";
-  });
+    console.error("Could not match country:", correct);
+  }
 
   const choices = [correct];
   while (choices.length < 3) {
@@ -94,5 +100,7 @@ function shuffle(array) {
 
 window.onload = () => {
   updateScore();
-  loadNext();
+  loadGeoData().then(() => {
+    loadNext();
+  });
 };
