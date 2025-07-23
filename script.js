@@ -3,9 +3,6 @@ let map = L.map('map', {
   attributionControl: false
 }).setView([-15, -60], 3);
 
-// REMOVE tile layer to show only the country outline
-// (no base map, no labels)
-
 let geojsonLayer;
 let currentCountry = null;
 let correctCount = 0;
@@ -17,16 +14,17 @@ const southAmericanCountries = [
 ];
 
 function updateScore() {
-  document.getElementById("score").textContent = 
+  document.getElementById("score").textContent =
     `Correct: ${correctCount} | Incorrect: ${wrongCount}`;
 }
 
 function getCountryGeoJSON(name) {
-  return fetch(`https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson`)
+  return fetch("https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson")
     .then(res => res.json())
     .then(data => {
       const countryFeature = data.features.find(f => f.properties.ADMIN === name);
-      return countryFeature ? countryFeature : null;
+      if (!countryFeature) throw new Error("Country not found: " + name);
+      return countryFeature;
     });
 }
 
@@ -40,19 +38,19 @@ function loadNext() {
   currentCountry = correct;
 
   getCountryGeoJSON(correct).then(feature => {
-    if (feature) {
-      geojsonLayer = L.geoJSON(feature, {
-        style: {
-          color: "#000",
-          fillColor: "#ccc",
-          weight: 2,
-          fillOpacity: 0.7
-        }
-      }).addTo(map);
-      map.fitBounds(geojsonLayer.getBounds());
-    } else {
-      console.error("Could not find country:", correct);
-    }
+    geojsonLayer = L.geoJSON(feature, {
+      style: {
+        color: "#222",
+        fillColor: "#aaa",
+        weight: 2,
+        fillOpacity: 0.8
+      }
+    }).addTo(map);
+    map.fitBounds(geojsonLayer.getBounds());
+    map.invalidateSize();
+  }).catch(err => {
+    console.error(err);
+    document.getElementById("feedback").textContent = "Error loading map.";
   });
 
   const choices = [correct];
