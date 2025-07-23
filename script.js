@@ -63,7 +63,10 @@ function shuffle(array) {
 }
 
 function startGame(selectedContinent) {
-  allCountries = continents[selectedContinent];
+  allCountries = geoData.features
+    .filter(f => f.properties.CONTINENT === selectedContinent)
+    .map(f => f.properties.ADMIN);
+  allCountries = shuffle(allCountries).slice(0, 20);
   countryQueue = shuffle([...allCountries]);
   correctCount = 0;
   wrongCount = 0;
@@ -99,7 +102,7 @@ function loadNext() {
     geojsonLayer = L.geoJSON(feature, {
       style: {
         color: "#000",
-        fillColor: "#ccc",
+        fillColor: "#78c2ad",
         weight: 2,
         fillOpacity: 0.8
       }
