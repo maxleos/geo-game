@@ -66,3 +66,33 @@ button {
 #continent-choices button:hover {
   background: #222;
 }
+
+
+.top-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: -10px;
+  position: relative;
+  z-index: 1000;
+}
+
+.fullscreen-btn {
+  font-size: 14px;
+  padding: 6px 12px;
+  background: #444;
+  color: white;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.end-btn {
+  font-size: 14px;
+  padding: 6px 12px;
+  background: #444;
+  color: white;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}

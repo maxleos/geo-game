@@ -10,9 +10,11 @@
 </head>
 <body>
   <div class="game-container">
+    <div class="top-buttons">
+      <button onclick="endGame()" class="end-btn">End</button>
+      <button onclick="toggleFullscreen()" class="fullscreen-btn">Fullscreen</button>
+    </div>
     <h1>Guess the Country</h1>
-    <button onclick="toggleFullscreen()" class="fullscreen-btn">🔲</button>
-    <button onclick="endGame()" class="end-btn">End</button>
 
     <div id="menu">
       <p>Select a continent:</p>
@@ -29,7 +31,7 @@
     <div id="end-screen">
       <p id="final-score"></p>
       <button onclick="backToMenu()">Back to continent selection</button>
-<button onclick="resumeGame()">Back to ongoing game</button>
+      <button onclick="resumeGame()">Back to ongoing game</button>
     </div>
   </div>
   <script src="script.js"></script>
