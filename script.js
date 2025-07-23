@@ -10,7 +10,8 @@ let wrongCount = 0;
 
 const southAmericanCountries = [
   "Argentina", "Bolivia", "Brazil", "Chile", "Colombia",
-  "Ecuador", "Guyana", "Paraguay", "Peru", "Suriname", "Uruguay", "Venezuela"
+  "Ecuador", "Guyana", "Paraguay", "Peru", "Suriname",
+  "Uruguay", "Venezuela"
 ];
 
 function updateScore() {
@@ -22,7 +23,10 @@ function getCountryGeoJSON(name) {
   return fetch("https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson")
     .then(res => res.json())
     .then(data => {
-      const countryFeature = data.features.find(f => f.properties.ADMIN === name);
+      const nameLower = name.toLowerCase();
+      const countryFeature = data.features.find(f =>
+        f.properties.ADMIN.toLowerCase().includes(nameLower)
+      );
       if (!countryFeature) throw new Error("Country not found: " + name);
       return countryFeature;
     });
