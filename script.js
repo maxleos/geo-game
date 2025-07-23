@@ -14,8 +14,9 @@ let geoData = null;
 let currentCountry = null;
 let correctCount = 0;
 let wrongCount = 0;
+let countryQueue = [];
 
-const countries = [
+const allCountries = [
   "Argentina", "Bolivia", "Brazil", "Chile", "Colombia",
   "Ecuador", "Guyana", "Paraguay", "Peru", "Suriname",
   "Uruguay", "Venezuela"
@@ -34,13 +35,38 @@ function loadGeoData() {
     });
 }
 
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function startGame() {
+  countryQueue = shuffle([...allCountries]);
+  correctCount = 0;
+  wrongCount = 0;
+  updateScore();
+  loadNext();
+}
+
 function loadNext() {
   document.getElementById("feedback").textContent = "";
+  document.getElementById("choices").innerHTML = "";
+
   if (geojsonLayer) {
     map.removeLayer(geojsonLayer);
   }
 
-  const correct = countries[Math.floor(Math.random() * countries.length)];
+  if (countryQueue.length === 0) {
+    const total = correctCount + wrongCount;
+    const percentage = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+    document.getElementById("feedback").textContent = `Game over! You got ${percentage}% correct.`;
+    return;
+  }
+
+  const correct = countryQueue.shift();
   currentCountry = correct;
 
   const feature = geoData.features.find(f =>
@@ -63,15 +89,11 @@ function loadNext() {
     console.error("Could not match country:", correct);
   }
 
-  const choices = [correct];
-  while (choices.length < 3) {
-    const option = countries[Math.floor(Math.random() * countries.length)];
-    if (!choices.includes(option)) {
-      choices.push(option);
-    }
-  }
+  const choices = shuffle([
+    correct,
+    ...shuffle(allCountries.filter(c => c !== correct)).slice(0, 2)
+  ]);
 
-  shuffle(choices);
   document.getElementById("choices").innerHTML = choices.map(name => {
     return `<button onclick="checkAnswer('${name}')">${name}</button>`;
   }).join("");
@@ -80,27 +102,21 @@ function loadNext() {
 function checkAnswer(name) {
   const feedback = document.getElementById("feedback");
   if (name === currentCountry) {
-    feedback.textContent = "Correct!";
+    feedback.textContent = "Well done, let's try the next one!";
     feedback.style.color = "green";
     correctCount++;
+    updateScore();
+    setTimeout(loadNext, 1500);
   } else {
-    feedback.textContent = "Wrong!";
+    feedback.textContent = "Incorrect, try again.";
     feedback.style.color = "red";
     wrongCount++;
-  }
-  updateScore();
-}
-
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+    updateScore();
   }
 }
 
 window.onload = () => {
-  updateScore();
   loadGeoData().then(() => {
-    loadNext();
+    startGame();
   });
 };
