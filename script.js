@@ -87,7 +87,8 @@ function loadNext() {
   if (countryQueue.length === 0) {
     const total = correctCount + wrongCount;
     const percentage = total > 0 ? Math.round((correctCount / total) * 100) : 0;
-    document.getElementById("feedback").textContent = `Game over! You got ${percentage}% correct.`;
+    document.getElementById("feedback").textContent = `Game finished! You got ${percentage}% correct.`;
+  document.getElementById("choices").innerHTML = `<button onclick=\"backToMenu()\">Back to continent selection</button>`;
     return;
   }
 
@@ -95,7 +96,7 @@ function loadNext() {
   currentCountry = correct;
 
   const feature = geoData.features.find(f =>
-    f.properties.ADMIN.toLowerCase().includes(correct.toLowerCase())
+    f.properties.ADMIN.toLowerCase() === correct.toLowerCase()
   );
 
   if (feature) {
@@ -163,4 +164,24 @@ function toggleFullscreen() {
   } else {
     document.exitFullscreen();
   }
+}
+
+
+function endGame() {
+  const total = correctCount + wrongCount;
+  const percentage = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+  document.getElementById("final-score").textContent = `You ended the game. Score: ${percentage}%`;
+  document.getElementById("game").style.display = "none";
+  document.getElementById("end-screen").style.display = "block";
+}
+
+function backToMenu() {
+  document.getElementById("end-screen").style.display = "none";
+  document.getElementById("menu").style.display = "block";
+}
+
+
+function resumeGame() {
+  document.getElementById("end-screen").style.display = "none";
+  document.getElementById("game").style.display = "block";
 }
