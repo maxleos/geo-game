@@ -41,3 +41,28 @@ button {
   margin-top: 10px;
   padding: 10px 20px;
 }
+
+
+.button-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+#continent-choices button {
+  font-size: 18px;
+  padding: 16px 32px;
+  border: none;
+  background: #007BFF;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  transition: background 0.2s;
+}
+
+#continent-choices button:hover {
+  background: #0056b3;
+}
