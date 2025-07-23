@@ -3,6 +3,12 @@ let map = L.map('map', {
   attributionControl: false
 }).setView([-15, -60], 3);
 
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OpenStreetMap &copy; CartoDB',
+  subdomains: 'abcd',
+  maxZoom: 19
+}).addTo(map);
+
 let geojsonLayer;
 let currentCountry = null;
 let correctCount = 0;
@@ -22,7 +28,7 @@ function updateScore() {
 function getGeoJSONFor(countryName) {
   const entry = am5geodata_data_countries2;
   for (let iso in entry) {
-    if (entry[iso].country.toLowerCase() === countryName.toLowerCase()) {
+    if (entry[iso].country.toLowerCase().includes(countryName.toLowerCase())) {
       const mapList = entry[iso].maps;
       const mapKey = mapList[0];
       return fetch(`https://cdn.amcharts.com/lib/5/geodata/json/${mapKey}.json`)
