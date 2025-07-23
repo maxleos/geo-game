@@ -8,7 +8,7 @@ let currentCountry = null;
 let correctCount = 0;
 let wrongCount = 0;
 
-const southAmericanCountries = [
+const countries = [
   "Argentina", "Bolivia", "Brazil", "Chile", "Colombia",
   "Ecuador", "Guyana", "Paraguay", "Peru", "Suriname",
   "Uruguay", "Venezuela"
@@ -19,17 +19,17 @@ function updateScore() {
     `Correct: ${correctCount} | Incorrect: ${wrongCount}`;
 }
 
-function getCountryGeoJSON(name) {
-  return fetch("https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson")
-    .then(res => res.json())
-    .then(data => {
-      const nameLower = name.toLowerCase();
-      const countryFeature = data.features.find(f =>
-        f.properties.ADMIN.toLowerCase().includes(nameLower)
-      );
-      if (!countryFeature) throw new Error("Country not found: " + name);
-      return countryFeature;
-    });
+function getGeoJSONFor(countryName) {
+  const entry = am5geodata_data_countries2;
+  for (let iso in entry) {
+    if (entry[iso].country.toLowerCase() === countryName.toLowerCase()) {
+      const mapList = entry[iso].maps;
+      const mapKey = mapList[0];
+      return fetch(`https://cdn.amcharts.com/lib/5/geodata/json/${mapKey}.json`)
+        .then(res => res.json());
+    }
+  }
+  throw new Error("Map not found for " + countryName);
 }
 
 function loadNext() {
@@ -38,14 +38,14 @@ function loadNext() {
     map.removeLayer(geojsonLayer);
   }
 
-  const correct = southAmericanCountries[Math.floor(Math.random() * southAmericanCountries.length)];
+  const correct = countries[Math.floor(Math.random() * countries.length)];
   currentCountry = correct;
 
-  getCountryGeoJSON(correct).then(feature => {
-    geojsonLayer = L.geoJSON(feature, {
+  getGeoJSONFor(correct).then(geojson => {
+    geojsonLayer = L.geoJSON(geojson, {
       style: {
-        color: "#222",
-        fillColor: "#aaa",
+        color: "#000",
+        fillColor: "#ccc",
         weight: 2,
         fillOpacity: 0.8
       }
@@ -59,7 +59,7 @@ function loadNext() {
 
   const choices = [correct];
   while (choices.length < 3) {
-    const option = southAmericanCountries[Math.floor(Math.random() * southAmericanCountries.length)];
+    const option = countries[Math.floor(Math.random() * countries.length)];
     if (!choices.includes(option)) {
       choices.push(option);
     }
