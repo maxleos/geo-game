@@ -7,10 +7,16 @@ body {
   background: #f0f0f0;
 }
 
+h1 {
+  margin-top: 10px;
+}
+
 .top-buttons {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  align-items: center;
+  margin-bottom: 5px;
+  padding: 0 10px;
 }
 
 button {
@@ -28,7 +34,7 @@ button:hover {
   background-color: #ddd;
 }
 
-.lang-btn {
+.lang-btn, .fullscreen-btn, .end-btn {
   font-size: 14px;
   padding: 6px 12px;
   background: #444;
@@ -36,5 +42,15 @@ button:hover {
   border-radius: 4px;
   border: none;
   cursor: pointer;
-  margin-left: auto;
+}
+
+#choices button {
+  min-width: 120px;
+  margin: 8px;
+}
+
+.button-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
