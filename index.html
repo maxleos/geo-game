@@ -1,39 +1,24 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Guess the Country</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <title>Geo Game</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="game-container">
-    <div class="top-buttons">
-      <button onclick="endGame()" class="end-btn">End</button>
-      <button onclick="toggleFullscreen()" class="fullscreen-btn">Fullscreen</button>
-    </div>
-    <h2>Tibor's Guess the Country</h2>
-
-    <div id="menu">
-      <p>Select a continent:</p>
-      <div id="continent-choices" class="button-grid"></div>
-    </div>
-
-    <div id="game" style="display:none;">
-      <div id="map" style="height: 400px;"></div>
-      <div id="choices"></div>
-      <p id="feedback"></p>
-      <p id="score"></p>
-    </div>
-
-    <div id="end-screen" style="display: none;">
-      <h2>Game Finished!</h2>
-      <p id="final-score"></p>
-      <button onclick="resumeGame()">Back to ongoing game</button>
-      <button onclick="backToMenu()">Back to continent selection</button>
-    </div>
+  <div class="top-buttons">
+    <button onclick="endGame()" class="end-btn">End</button>
+    <button onclick="toggleLanguage()" class="lang-btn">EN/DE</button>
+    <button onclick="toggleFullscreen()" class="fullscreen-btn">Fullscreen</button>
+  </div>
+  <h1>Guess the Country</h1>
+  <div id="menu"><p>Select a continent:</p></div>
+  <div id="game"></div>
+  <div id="end-screen" style="display:none;">
+    <h2>Game Finished!</h2>
+    <p id="final-score"></p>
+    <button onclick="resumeGame()">Back to ongoing game</button>
+    <button onclick="backToMenu()">Back to continent selection</button>
   </div>
   <script src="script.js"></script>
 </body>
