@@ -1,23 +1,102 @@
-
 body {
-  font-family: sans-serif;
+  font-family: Arial, sans-serif;
   text-align: center;
-  margin: 0;
-  padding: 1em;
   background: #f0f0f0;
+  padding: 20px;
 }
 
-h1 {
-  margin-top: 10px;
+.game-container {
+  max-width: 600px;
+  margin: auto;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px #ccc;
 }
+
+#map {
+  margin-bottom: 20px;
+  border: 2px solid #ccc;
+}
+
+#choices button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+#feedback {
+  font-size: 18px;
+  margin-top: 10px;
+  height: 24px;
+}
+
+#score {
+  font-size: 16px;
+  margin-top: 5px;
+  color: #333;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+}
+
+
+.button-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+#continent-choices button {
+  font-size: 18px;
+  padding: 16px 32px;
+  border: none;
+  background: #444;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  transition: background 0.2s;
+}
+
+#continent-choices button:hover {
+  background: #222;
+}
+
 
 .top-buttons {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
-  padding: 0 10px;
+  margin-bottom: -10px;
+  position: relative;
+  z-index: 1000;
 }
+
+.fullscreen-btn {
+  font-size: 14px;
+  padding: 6px 12px;
+  background: #444;
+  color: white;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.end-btn {
+  font-size: 14px;
+  padding: 6px 12px;
+  background: #444;
+  color: white;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
 
 button {
   background-color: #eee;
@@ -28,29 +107,9 @@ button {
   border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 button:hover {
   background-color: #ddd;
-}
-
-.lang-btn, .fullscreen-btn, .end-btn {
-  font-size: 14px;
-  padding: 6px 12px;
-  background: #444;
-  color: white;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-}
-
-#choices button {
-  min-width: 120px;
-  margin: 8px;
-}
-
-.button-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
 }
